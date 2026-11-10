@@ -12,7 +12,8 @@
     asn: '#EA4335',
     url: '#9AA0A6',
     organization: '#A142F4',
-    sanctions: '#D93025'
+    sanctions: '#D93025',
+    phone: '#00ACC1'
   };
 
   $effect(() => {

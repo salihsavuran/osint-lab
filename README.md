@@ -97,7 +97,8 @@ cd frontend && npm install && npm run build && cd ..
 
 ## Collectors
 
-All of these are public, unauthenticated endpoints. No API keys required.
+All of these are public and need no API keys. One of them — `phone_number` —
+runs entirely offline.
 
 | id | Source | Accepts | What you get |
 | --- | --- | --- | --- |
@@ -112,9 +113,14 @@ All of these are public, unauthenticated endpoints. No API keys required.
 | `edgar` | SEC EDGAR | organization | CIK, SIC industry, incorporation state, former names |
 | `ofac` | US Treasury | organization | Sanctions list name matches (leads, not verdicts) |
 | `wikidata` | Wikidata | organization | Description, official site, country, industry |
+| `phone_number` | libphonenumber (bundled) | phone | Validity, country, region, line type, allocated carrier, timezones — offline |
 
 Every collector declares its rate limit, and the runner enforces it. Responses
 are cached with a per-source TTL.
+
+`phone_number` is the exception to "fetches from the web": it reads numbering-plan
+metadata bundled with the library, so it makes no network request at all. It
+describes the **number**, never the subscriber — see [ETHICS.md](ETHICS.md#phone-numbers).
 
 ## How it works
 
@@ -169,7 +175,7 @@ Three guided missions that use only public data and are safe to run:
 ## Roadmap
 
 - [x] Provenance model, evidence store, cited reports
-- [x] 11 keyless collectors
+- [x] 12 collectors, all keyless
 - [x] CLI + HTTP API + web UI
 - [ ] Geo map view (Leaflet) for IP entities
 - [ ] Optional keyed collectors (Shodan, Censys, Companies House)

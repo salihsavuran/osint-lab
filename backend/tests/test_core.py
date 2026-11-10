@@ -17,6 +17,9 @@ from osintlab.service import CollectorService, infer_entity_type
         ("8.8.8.8", "ip"),
         ("https://example.com/path", "url"),
         ("2606:4700::1111", "ip"),
+        ("+14155552671", "phone"),
+        ("+49 30 12345678", "phone"),
+        ("555.123.4567", "phone"),
         ("Acme Corporation", "organization"),
     ],
 )

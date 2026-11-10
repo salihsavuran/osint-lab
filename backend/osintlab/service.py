@@ -32,6 +32,18 @@ from .fetch import Fetcher, FetchError
 from .models import Attribute, AuditEvent, Case, Edge, Entity, Provenance
 from .ratelimit import RateLimiter
 
+_PHONE_SEPARATORS = str.maketrans("", "", " -()./")
+
+
+def _looks_like_phone(value: str) -> bool:
+    compact = value.translate(_PHONE_SEPARATORS)
+    if not compact:
+        return False
+    digits = compact[1:] if compact.startswith("+") else compact
+    if not digits.isdigit():
+        return False
+    return 7 <= len(digits) <= 15
+
 
 def infer_entity_type(target: str) -> str:
     value = target.strip()
@@ -52,6 +64,9 @@ def infer_entity_type(target: str) -> str:
             return "ip"
         except ValueError:
             continue
+
+    if _looks_like_phone(candidate):
+        return "phone"
 
     if "." in candidate and " " not in candidate:
         return "domain"

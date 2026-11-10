@@ -138,9 +138,10 @@ def render_report(session: Session, case: Case) -> str:
             refs = json.loads(prov.evidence_refs or "[]")
         except ValueError:
             refs = []
+        digest_cell = f"`{prov.raw_sha256[:16]}`" if prov.raw_sha256 else "offline (no request)"
         out.append(
             f"| {prov.source} | {prov.retrieved_at.strftime('%Y-%m-%d %H:%M')} "
-            f"| {len(refs)} | `{prov.raw_sha256[:16]}` |"
+            f"| {len(refs)} | {digest_cell} |"
         )
     out.append("")
 

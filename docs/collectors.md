@@ -162,6 +162,37 @@ source. Vandalism and stale data are real.
 
 ---
 
+## `phone_number` — phone number structure
+
+**Endpoint:** none — reads metadata bundled with `phonenumbers`
+**Accepts:** phone · **Rate:** n/a (offline) · **Cache:** n/a
+
+E.164 / international / national / RFC 3966 formatting, validity, possible
+length, country calling code, region, line type (mobile, fixed line, VoIP,
+toll-free, premium, pager, UAN…), allocated carrier, coarse geographic
+description, and timezones.
+
+**Limits — read these before using the output:**
+
+- **Carrier is an allocation, not the current operator.** Number portability
+  means the metadata describes who the range was assigned to, which may be
+  years out of date. Never present it as "the current carrier".
+- **Line type is not always knowable.** US numbers return
+  `fixed_line_or_mobile` because the numbering plan does not distinguish them.
+  Do not claim a number is a mobile when the type says otherwise.
+- **Region is a numbering-plan region, not a location.** `+44 7911…` resolving
+  to Guernsey means the range is allocated there, not that the phone is there.
+  A ported or roaming number will contradict the metadata.
+- **Geographic description is coarse** — city or region at best, and absent for
+  most mobile ranges.
+- **No subscriber information.** This collector cannot and will not tell you who
+  owns a number. There is no reverse lookup, no HLR probe, no name resolution.
+
+National-format numbers without a `+` prefix need `OSINTLAB_PHONE_REGION` set
+(e.g. `DE`, `US`); otherwise parsing fails with an explicit note.
+
+---
+
 ## Adding a source
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md). The registry enforces a declared

@@ -15,7 +15,8 @@ machinery for harassing someone.
 
 **Out of scope:** building a profile on a private individual.
 
-- no email, phone or home-address discovery
+- no email or home-address discovery
+- no reverse phone lookup that identifies a subscriber (see [Phone numbers](#phone-numbers))
 - no social-media aggregation or "find all accounts for this person"
 - no breach or leaked-credential data
 - no facial recognition or image-based identification
@@ -37,6 +38,33 @@ doxxing, regardless of whether each individual piece is technically public. The
 harm comes from the aggregation, not the individual records.
 
 Teaching the first category is education. Building the second is a weapon.
+
+## Phone numbers
+
+A phone number sits on the line, so the rule is stated explicitly.
+
+**Allowed — describing the number:**
+
+- Is it a valid number within its numbering plan?
+- Which country and region is the range allocated to?
+- Is it a mobile, fixed line, VoIP, toll-free or premium range?
+- Which operator was the range originally allocated to?
+- Which timezones does the range span?
+
+This is public numbering-plan data. It is what your phone's dialer uses to
+format a number correctly, and it reveals nothing about a person.
+
+**Not allowed — identifying the subscriber:**
+
+- Reverse lookup to a name
+- HLR / home-location-register probes that test whether a number is live
+- "Who called me" style databases built from scraped or leaked data
+- Linking a number to social accounts, addresses or other identifiers
+- Bulk enumeration of a range to find active numbers
+
+The first list describes a **number**. The second list describes a **person**,
+and a number is one of the strongest join keys between datasets. That is why the
+line is drawn there rather than at "is the data public".
 
 ## Rules the code enforces
 

@@ -203,6 +203,7 @@ code {
 .badge.url { color: var(--muted); }
 .badge.organization { color: var(--purple); }
 .badge.sanctions { color: var(--red); }
+.badge.phone { color: #00acc1; }
 
 .ok { color: var(--green); }
 .err { color: var(--red); }

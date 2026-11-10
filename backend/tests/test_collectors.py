@@ -8,7 +8,7 @@ from osintlab.config import settings
 
 def test_registry_is_well_formed():
     collectors = all_collectors()
-    assert len(collectors) >= 10
+    assert len(collectors) >= 12
 
     for collector in collectors.values():
         assert collector.id
@@ -21,7 +21,7 @@ def test_registry_is_well_formed():
 
 
 def test_every_entity_type_has_at_least_one_collector():
-    for entity_type in ("domain", "ip", "organization"):
+    for entity_type in ("domain", "ip", "organization", "phone"):
         assert collectors_for(entity_type), f"no collector for {entity_type}"
 
 
@@ -107,6 +107,41 @@ def test_ofac_flags_name_matches_as_leads(fake_fetcher):
     assert facts["ofac.match_count"] == "1"
     assert facts["ofac.match_name"] == "ACME HOLDINGS"
     assert any("not identity matches" in note for note in result.notes)
+
+
+def test_phone_collector_parses_international_number(fake_fetcher):
+    from osintlab.collectors.phone_number import PhoneNumberCollector
+
+    result = PhoneNumberCollector().collect(_ctx(fake_fetcher, "+493012345678", "phone"))
+    facts = {fact.key: fact.value for fact in result.facts}
+
+    assert facts["phone.valid"] == "true"
+    assert facts["phone.e164"] == "+493012345678"
+    assert facts["phone.region"] == "DE"
+    assert facts["phone.line_type"] == "fixed_line"
+    assert facts["phone.country_code"] == "+49"
+    # Offline collector: it must not have made a single request.
+    assert fake_fetcher.calls == []
+
+
+def test_phone_collector_requires_region_for_national_format(fake_fetcher):
+    from osintlab.collectors.phone_number import PhoneNumberCollector
+
+    result = PhoneNumberCollector().collect(_ctx(fake_fetcher, "03012345678", "phone"))
+
+    assert result.facts == []
+    assert any("could not parse" in note for note in result.notes)
+    assert any("OSINTLAB_PHONE_REGION" in note for note in result.notes)
+
+
+def test_phone_collector_flags_invalid_numbers(fake_fetcher):
+    from osintlab.collectors.phone_number import PhoneNumberCollector
+
+    result = PhoneNumberCollector().collect(_ctx(fake_fetcher, "+4930", "phone"))
+    facts = {fact.key: fact.value for fact in result.facts}
+
+    assert facts["phone.valid"] == "false"
+    assert any("not valid" in note for note in result.notes)
 
 
 def test_graph_projection(db_session, fake_fetcher, store):

@@ -107,6 +107,7 @@ def load_builtin() -> None:
         ip_asn,
         ip_geo,
         ofac,
+        phone_number,
         rdap,
         wayback,
         wikidata,

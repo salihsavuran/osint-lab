@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     request_timeout: float = 20.0
     max_retries: int = 2
     offline: bool = False
+    #: ISO 3166-1 alpha-2 region used to interpret national-format phone
+    #: numbers, e.g. "DE" or "US". Required only for numbers without a + prefix.
+    default_phone_region: str = ""
 
     @property
     def resolved_database_url(self) -> str:

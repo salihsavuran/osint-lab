@@ -36,6 +36,7 @@ ENTITY_TYPES = (
     "url",
     "organization",
     "sanctions",
+    "phone",
 )
 
 
