@@ -1,0 +1,11 @@
+services:
+  osint-lab:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      # SEC EDGAR requires a descriptive User-Agent with a contact address.
+      OSINTLAB_USER_AGENT: "osint-lab/0.1 (educational; contact: change-me@example.org)"
+    restart: unless-stopped

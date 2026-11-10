@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+
+# Node
+node_modules/
+.svelte-kit/
+frontend/build/
+frontend/.svelte-kit/
+
+# Local runtime data (evidence snapshots, sqlite db)
+data/
+*.db
+*.sqlite3
+
+# Secrets and local config
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

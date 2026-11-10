@@ -1,0 +1,67 @@
+[project]
+name = "osint-lab"
+version = "0.1.0"
+description = "Educational OSINT workbench with full provenance tracking"
+requires-python = ">=3.12"
+license = { text = "AGPL-3.0-or-later" }
+authors = [{ name = "osint-lab contributors" }]
+keywords = ["osint", "education", "provenance", "reconnaissance"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Education",
+  "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Education",
+  "Topic :: Security",
+]
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "sqlalchemy>=2.0.35",
+  "httpx>=0.27",
+  "pydantic>=2.9",
+  "pydantic-settings>=2.5",
+  "typer>=0.12",
+  "rich>=13.9",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3",
+  "respx>=0.21",
+  "ruff>=0.7",
+  "mypy>=1.11",
+]
+
+[project.scripts]
+osintlab = "osintlab.cli:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["osintlab"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# FastAPI's Depends() and typer's Option() are meant to be called in defaults.
+"osintlab/api/*" = ["B008"]
+"osintlab/cli.py" = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = true
